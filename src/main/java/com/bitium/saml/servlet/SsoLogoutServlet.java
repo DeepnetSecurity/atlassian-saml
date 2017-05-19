@@ -35,6 +35,8 @@ public class SsoLogoutServlet extends HttpServlet {
             SAMLMessageContext messageContext = context.createSamlMessageContext(request, response);
 
             SAMLCredential credential = (SAMLCredential)request.getSession().getAttribute("SAMLCredential");
+            if(credential == null)
+                credential = (SAMLCredential)getServletContext().getAttribute("SAMLCredential");            
 
             // Send request
             SingleLogoutProfileImpl profile = new SingleLogoutProfileImpl();

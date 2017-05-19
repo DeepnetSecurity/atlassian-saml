@@ -106,11 +106,13 @@ public abstract class SsoLoginServlet extends HttpServlet {
             credential = consumer.processAuthenticationResponse(messageContext);
 
             request.getSession().setAttribute("SAMLCredential", credential);
-
+            getServletContext().setAttribute("SAMLCredential", credential);    //set on context as well
+            
             String uidAttribute = saml2Config.getUidAttribute();
             String userName = uidAttribute.equals("NameID") ? credential.getNameID().getValue() : credential.getAttributeAsString(uidAttribute);
 
             authenticateUserAndLogin(request, response, userName);
+
         } catch (Exception e) {
             redirectToLoginWithSAMLError(response, e, "plugin_exception");
         }
