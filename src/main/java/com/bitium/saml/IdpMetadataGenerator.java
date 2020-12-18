@@ -36,6 +36,7 @@ public class IdpMetadataGenerator {
 
         ExtendedMetadata extendedMetadata = new ExtendedMetadata();
     	extendedMetadata.setSigningKey(configuration.getIdpEntityId());
+        extendedMetadata.setRequireLogoutRequestSigned(false);
 
     	ExtendedMetadataDelegate idpMetadataProvider = new ExtendedMetadataDelegate(memoryProvider, extendedMetadata);
     	idpMetadataProvider.setMetadataRequireSignature(false);
