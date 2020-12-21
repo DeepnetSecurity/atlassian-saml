@@ -1,5 +1,6 @@
 package com.bitium.saml.servlet;
 
+import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.bitium.saml.SAMLContext;
 import com.bitium.saml.config.SAMLConfig;
 import org.apache.commons.logging.Log;
@@ -8,17 +9,21 @@ import org.springframework.security.saml.SAMLCredential;
 import org.springframework.security.saml.context.SAMLMessageContext;
 import org.springframework.security.saml.websso.SingleLogoutProfileImpl;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Named
 public class SsoLogoutServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     private Log log = LogFactory.getLog(SsoLogoutServlet.class);
 
+    @ComponentImport
     private SAMLConfig saml2Config;
 
     @Override
@@ -49,8 +54,13 @@ public class SsoLogoutServlet extends HttpServlet {
             response.sendRedirect(saml2Config.getBaseUrl() + "/login.action?samlerror=general");
         }
     }
-
+/*
     public void setSaml2Config(SAMLConfig saml2Config) {
+        this.saml2Config = saml2Config;
+    }
+*/
+    @Inject
+    public SsoLogoutServlet(SAMLConfig saml2Config) {
         this.saml2Config = saml2Config;
     }
 }

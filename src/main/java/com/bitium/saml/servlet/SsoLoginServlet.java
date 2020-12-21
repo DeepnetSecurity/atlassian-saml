@@ -1,5 +1,6 @@
 package com.bitium.saml.servlet;
 
+import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.seraph.auth.DefaultAuthenticator;
 import com.bitium.saml.SAMLContext;
 import com.bitium.saml.config.SAMLConfig;
@@ -11,6 +12,8 @@ import org.springframework.security.saml.context.SAMLMessageContext;
 import org.springframework.security.saml.util.SAMLUtil;
 import org.springframework.security.saml.websso.*;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +25,7 @@ import java.lang.reflect.Method;
 import java.net.URI;
 import java.security.Principal;
 
-
+@Named
 public abstract class SsoLoginServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -30,6 +33,7 @@ public abstract class SsoLoginServlet extends HttpServlet {
 
     protected Log log = LogFactory.getLog(SsoLoginServlet.class);
 
+    @ComponentImport
     protected SAMLConfig saml2Config;
 
     protected SAMLCredential credential;
@@ -173,8 +177,13 @@ public abstract class SsoLoginServlet extends HttpServlet {
     protected abstract String getDashboardUrl();
 
     protected abstract String getLoginFormUrl();
-
+/*
     public void setSaml2Config(SAMLConfig saml2Config) {
+        this.saml2Config = saml2Config;
+    }
+    */
+    @Inject
+    public SsoLoginServlet(SAMLConfig saml2Config) {
         this.saml2Config = saml2Config;
     }
 }
